@@ -9,6 +9,7 @@
 <meta property="og:image" content="img/estudio-aparelhos.jpg">
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" type="image/png" href="img/favicon.png">
+<script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","z36hcmzak3");</script>
 <title>Angá Pilates Clássico</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -205,6 +206,7 @@ footer img{height:28px;width:auto;align-self:flex-start}
 footer a{color:var(--sage)}
 footer strong{color:var(--branco);font-weight:600}
 footer .pilha{gap:8px}
+.aviso-cookies{font-size:12px;color:rgba(255,255,255,.55);max-width:46ch;margin-top:6px}
 
 /* Planos */
 .planos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:stretch}
@@ -585,6 +587,7 @@ footer .pilha{gap:8px}
       <span>Fisioterapeuta · CREFITO 204714-F</span>
       <span>Rua Walter Duarte Pereira, 1664, Capim Macio, Natal/RN</span>
       <span>WhatsApp (84) 99103-6988 · <a href="https://instagram.com/anga.pilatesclassico" target="_blank" rel="noopener">@anga.pilatesclassico</a></span>
+      <span class="aviso-cookies">Este site usa cookies do Microsoft Clarity para entender, de forma anônima, como a página é usada e melhorar a sua experiência.</span>
     </div>
   </div>
 </footer>
@@ -609,6 +612,7 @@ footer .pilha{gap:8px}
     if (origem === "anuncio") sessionStorage.setItem("anga_origem", "anuncio");
     else if (sessionStorage.getItem("anga_origem") === "anuncio") origem = "anuncio";
   } catch (e) {}
+  try { if (typeof window.clarity === "function") window.clarity("set", "origem", origem); } catch (e) {}
   var href = "https://wa.me/" + NUM + "?text=" + encodeURIComponent(MSG[origem]);
   var abertura = origem === "anuncio" ? "Oi! Vi o anúncio do Angá no Google e " : "Oi! Vi o site do Angá no Google e ";
   document.querySelectorAll("a[data-wa]").forEach(function(a){
@@ -616,6 +620,7 @@ footer .pilha{gap:8px}
     a.href = plano ? "https://wa.me/" + NUM + "?text=" + encodeURIComponent(abertura + "quero saber sobre o plano " + plano + ".") : href;
     a.addEventListener("click", function(){
       try { if (typeof window.gtag === "function") window.gtag("event", "clique_whatsapp", { origem: origem, plano: plano || "primeira_aula" }); } catch (e) {}
+      try { if (typeof window.clarity === "function") { window.clarity("set", "plano", plano || "primeira_aula"); window.clarity("event", "clique_whatsapp"); } } catch (e) {}
     });
   });
 })();
