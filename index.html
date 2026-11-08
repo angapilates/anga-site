@@ -10,6 +10,25 @@
 <meta property="og:locale" content="pt_BR">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","z36hcmzak3");</script>
+<!-- Google Ads: preencher os dois valores abaixo quando a conta existir. Enquanto estiverem vazios, nada do Google carrega. -->
+<script>
+window.ANGA_GADS = {
+  id: "",          // ID da tag, no formato "AW-123456789"
+  rotuloWhats: ""  // rótulo da conversão "Clique no WhatsApp" (ação primária)
+};
+(function(){
+  var cfg = window.ANGA_GADS;
+  if (!cfg || !cfg.id) return;
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(cfg.id);
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ window.dataLayer.push(arguments); };
+  window.gtag("js", new Date());
+  window.gtag("config", cfg.id);
+})();
+</script>
 <title>Angá Pilates Clássico</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -587,7 +606,7 @@ footer .pilha{gap:8px}
       <span>Fisioterapeuta · CREFITO 204714-F</span>
       <span>Rua Walter Duarte Pereira, 1664, Capim Macio, Natal/RN</span>
       <span>WhatsApp (84) 99103-6988 · <a href="https://instagram.com/anga.pilatesclassico" target="_blank" rel="noopener">@anga.pilatesclassico</a></span>
-      <span class="aviso-cookies">Este site usa cookies do Microsoft Clarity para entender, de forma anônima, como a página é usada e melhorar a sua experiência.</span>
+      <span class="aviso-cookies" id="aviso-cookies">Este site usa cookies do Microsoft Clarity para entender, de forma anônima, como a página é usada e melhorar a sua experiência.</span>
     </div>
   </div>
 </footer>
@@ -613,13 +632,23 @@ footer .pilha{gap:8px}
     else if (sessionStorage.getItem("anga_origem") === "anuncio") origem = "anuncio";
   } catch (e) {}
   try { if (typeof window.clarity === "function") window.clarity("set", "origem", origem); } catch (e) {}
+  try {
+    var aviso = document.getElementById("aviso-cookies");
+    if (aviso && window.ANGA_GADS && window.ANGA_GADS.id) aviso.textContent = "Este site usa cookies do Microsoft Clarity e do Google para entender, de forma anônima, como a página é usada, medir os resultados dos anúncios e melhorar a sua experiência.";
+  } catch (e) {}
   var href = "https://wa.me/" + NUM + "?text=" + encodeURIComponent(MSG[origem]);
   var abertura = origem === "anuncio" ? "Oi! Vi o anúncio do Angá no Google e " : "Oi! Vi o site do Angá no Google e ";
   document.querySelectorAll("a[data-wa]").forEach(function(a){
     var plano = a.getAttribute("data-plano");
     a.href = plano ? "https://wa.me/" + NUM + "?text=" + encodeURIComponent(abertura + "quero saber sobre o plano " + plano + ".") : href;
     a.addEventListener("click", function(){
-      try { if (typeof window.gtag === "function") window.gtag("event", "clique_whatsapp", { origem: origem, plano: plano || "primeira_aula" }); } catch (e) {}
+      try {
+        if (typeof window.gtag === "function") {
+          window.gtag("event", "clique_whatsapp", { origem: origem, plano: plano || "primeira_aula" });
+          var g = window.ANGA_GADS || {};
+          if (g.id && g.rotuloWhats) window.gtag("event", "conversion", { send_to: g.id + "/" + g.rotuloWhats });
+        }
+      } catch (e) {}
       try { if (typeof window.clarity === "function") { window.clarity("set", "plano", plano || "primeira_aula"); window.clarity("event", "clique_whatsapp"); } } catch (e) {}
     });
   });
